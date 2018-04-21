@@ -1,6 +1,7 @@
 package com.example.faiq.taskmanagement.Activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -20,6 +21,7 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.faiq.taskmanagement.BackgroundService.TimerService;
 import com.example.faiq.taskmanagement.Fragments.AllTasksFragment;
 import com.example.faiq.taskmanagement.Fragments.MessagesFragment;
 import com.example.faiq.taskmanagement.R;
@@ -49,6 +51,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
 
         toolbar_title=(TextView)findViewById(R.id.toolbar_title);
 

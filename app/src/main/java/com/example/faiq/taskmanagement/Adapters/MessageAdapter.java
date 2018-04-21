@@ -39,6 +39,11 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+    @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         MessageModel model=list.get(position);
 
