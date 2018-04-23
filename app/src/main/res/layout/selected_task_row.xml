@@ -80,7 +80,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="20dp"
                 android:layout_below="@id/linearlayout1"
-                android:text="11:45"
+                android:text="00:00"
                 android:textSize="18sp"/>
         </RelativeLayout>
 
