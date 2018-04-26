@@ -151,7 +151,6 @@ public class RemainingTasksFragment extends Fragment {
 
                 params.put("user_id", user_id);
 
-
                 Log.e("params" , params.toString());
 
                 return params;
