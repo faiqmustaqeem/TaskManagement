@@ -18,12 +18,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageView;
+
 import android.widget.TextView;
 
-import com.example.faiq.taskmanagement.BackgroundService.TimerService;
 import com.example.faiq.taskmanagement.Fragments.AllTasksFragment;
+import com.example.faiq.taskmanagement.Fragments.CompletedTasksFragment;
 import com.example.faiq.taskmanagement.Fragments.MessagesFragment;
+import com.example.faiq.taskmanagement.Fragments.RemainingTasksFragment;
 import com.example.faiq.taskmanagement.R;
 
 public class MainActivity extends AppCompatActivity
@@ -114,7 +115,13 @@ public class MainActivity extends AppCompatActivity
                          // dashboard
                          AllTasksFragment allTasksFragment = new AllTasksFragment();
                          return allTasksFragment;
+                     case 1:
+                         CompletedTasksFragment completedTasksFragment=new CompletedTasksFragment();
+                         return completedTasksFragment;
 
+                     case 2:
+                         RemainingTasksFragment remainingTasksFragment=new RemainingTasksFragment();
+                         return remainingTasksFragment;
                      case 3:
                          MessagesFragment messagesFragment=new MessagesFragment();
                          return messagesFragment;
@@ -149,6 +156,16 @@ public class MainActivity extends AppCompatActivity
                              case R.id.nav_all_tasks:
                                  navItemIndex = 0;
                                  CURRENT_TAG = TAG_ALL_TASKS;
+                                 break;
+
+                             case R.id.nav_completed_tasks:
+                                 navItemIndex=1;
+                                 CURRENT_TAG=TAG_COMPLETED_TASKS;
+                                 break;
+
+                             case R.id.nav_remaining_tasks:
+                                 navItemIndex=2;
+                                 CURRENT_TAG=TAG_REMAINING_TASKS;
                                  break;
 
                              case R.id.nav_messages:

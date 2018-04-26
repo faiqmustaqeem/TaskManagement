@@ -9,6 +9,11 @@ public class MessageModel {
     private String title;
     private String message;
     private String id;
+    private String time;
+    public MessageModel()
+    {
+
+    }
 
 
     public String getImageLink() {
@@ -41,5 +46,13 @@ public class MessageModel {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 }

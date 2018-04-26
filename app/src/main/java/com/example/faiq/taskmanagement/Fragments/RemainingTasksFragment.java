@@ -3,13 +3,10 @@ package com.example.faiq.taskmanagement.Fragments;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -25,7 +22,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.faiq.taskmanagement.Activity.GlobalClass;
-import com.example.faiq.taskmanagement.Activity.MainActivity;
 import com.example.faiq.taskmanagement.Adapters.TaskAdapter;
 import com.example.faiq.taskmanagement.Models.TaskModel;
 import com.example.faiq.taskmanagement.R;
@@ -42,19 +38,16 @@ import java.util.Map;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class AllTasksFragment extends Fragment {
+public class RemainingTasksFragment extends Fragment {
 
     RecyclerView recyclerView;
     TaskAdapter adapter;
     List<TaskModel> list=new ArrayList<>();
     Activity activity;
 
-
-    public AllTasksFragment() {
+    public RemainingTasksFragment() {
         // Required empty public constructor
     }
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,8 +67,7 @@ public class AllTasksFragment extends Fragment {
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(adapter);
 
-        GlobalClass.is_from="all";
-
+        GlobalClass.is_from="remaining";
         loadTasks();
 
 
@@ -115,7 +107,9 @@ public class AllTasksFragment extends Fragment {
                                     model.setTitle(jsonObject.getString("project_title"));
                                     model.setDescription(jsonObject.getString("description"));
 
+
                                     list.add(model);
+
                                 }
 
                                 dialog.dismiss();
@@ -151,7 +145,7 @@ public class AllTasksFragment extends Fragment {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
 
-                    SharedPreferences sharedPreferences=activity.getSharedPreferences("SharedPreferences", MODE_PRIVATE);
+                SharedPreferences sharedPreferences=activity.getSharedPreferences("SharedPreferences", MODE_PRIVATE);
 
                 String user_id=sharedPreferences.getString("id","");
 

@@ -51,7 +51,7 @@ public class MessagesFragment extends Fragment {
         activity=getActivity();
 
         recyclerView=view.findViewById(R.id.recycleview);
-        adapter=new MessageAdapter(list , activity);
+        adapter=new MessageAdapter(list , activity , activity);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(activity);
         recyclerView.setLayoutManager(mLayoutManager);
 //         recyclerView.setItemAnimator(new DefaultItemAnimator());

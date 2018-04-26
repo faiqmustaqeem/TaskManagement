@@ -1,12 +1,15 @@
 package com.example.faiq.taskmanagement.Adapters;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.faiq.taskmanagement.Activity.ChatActivity;
 import com.example.faiq.taskmanagement.Models.MessageModel;
 import com.example.faiq.taskmanagement.Models.TaskModel;
 import com.example.faiq.taskmanagement.R;
@@ -23,11 +26,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHolder> {
     List<MessageModel> list=new ArrayList<>();
     Context context;
-
-    public MessageAdapter(List<MessageModel> list , Context context)
+    Activity activity;
+    public MessageAdapter(List<MessageModel> list , Context context , Activity activity)
     {
         this.list=list;
         this.context=context;
+        this.activity=activity;
     }
 
     @Override
@@ -49,6 +53,16 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
 
         holder.title.setText(model.getTitle());
         holder.desc.setText(model.getMessage());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(context , ChatActivity.class);
+                context.startActivity(intent);
+                activity.overridePendingTransition( R.anim.slide_in_up, R.anim.slide_out_up );
+
+            }
+        });
     }
 
     @Override

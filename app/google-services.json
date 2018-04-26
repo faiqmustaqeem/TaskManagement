@@ -1,0 +1,73 @@
+{
+  "project_info": {
+    "project_number": "1002645869979",
+    "firebase_url": "https://pasha-pharmacy.firebaseio.com",
+    "project_id": "pasha-pharmacy",
+    "storage_bucket": "pasha-pharmacy.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1002645869979:android:59ca3d4410395fc0",
+        "android_client_info": {
+          "package_name": "com.example.faiq.pashapharmacy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1002645869979-uc23e3iih4lfqjta4ierndvj1c7s5idn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkTUXAj9oD9DZK5-Tfze4dqWZPxnZAyYs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1002645869979:android:bc40d8c702588377",
+        "android_client_info": {
+          "package_name": "com.example.faiq.taskmanagement"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1002645869979-uc23e3iih4lfqjta4ierndvj1c7s5idn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkTUXAj9oD9DZK5-Tfze4dqWZPxnZAyYs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

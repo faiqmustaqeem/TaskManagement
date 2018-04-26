@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.faiq.taskmanagement.Activity.GlobalClass;
 import com.example.faiq.taskmanagement.Activity.SelectedTaskActivity;
 import com.example.faiq.taskmanagement.Models.TaskModel;
 import com.example.faiq.taskmanagement.R;
@@ -47,7 +48,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        TaskModel model=list.get(position);
+        final TaskModel model=list.get(position);
 
         holder.title.setText(model.getTitle());
         holder.desc.setText(model.getDescription());
@@ -58,6 +59,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
             public void onClick(View view) {
                 Intent intent=new Intent(context, SelectedTaskActivity.class);
                 context.startActivity(intent);
+                GlobalClass.project_id=model.getId();
             }
         });
     }

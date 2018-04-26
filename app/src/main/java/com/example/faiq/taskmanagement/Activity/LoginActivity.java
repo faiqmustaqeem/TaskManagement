@@ -1,21 +1,15 @@
-package com.example.faiq.taskmanagement.Fragments;
+package com.example.faiq.taskmanagement.Activity;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
@@ -24,72 +18,53 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.faiq.taskmanagement.Activity.GlobalClass;
-import com.example.faiq.taskmanagement.Activity.MainActivity;
-import com.example.faiq.taskmanagement.Adapters.TaskAdapter;
-import com.example.faiq.taskmanagement.Models.TaskModel;
 import com.example.faiq.taskmanagement.R;
+import com.google.firebase.iid.FirebaseInstanceId;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import static android.content.Context.MODE_PRIVATE;
+public class LoginActivity extends AppCompatActivity {
 
-public class AllTasksFragment extends Fragment {
-
-    RecyclerView recyclerView;
-    TaskAdapter adapter;
-    List<TaskModel> list=new ArrayList<>();
+    Button btn_login;
+    EditText etEmail , etPassword;
     Activity activity;
-
-
-    public AllTasksFragment() {
-        // Required empty public constructor
-    }
-
-
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
+        activity=this;
 
-    }
+        etEmail=(EditText)findViewById(R.id.etEmail);
+        etPassword=(EditText)findViewById(R.id.etPassowrd);
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_all_tasks, container, false);
-        activity=getActivity();
+        btn_login=(Button)findViewById(R.id.btn_login);
 
-        recyclerView=view.findViewById(R.id.recycleview_all_tasks);
-        adapter=new TaskAdapter(list , activity);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(activity);
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setAdapter(adapter);
-
-        GlobalClass.is_from="all";
-
-        loadTasks();
-
-
-        return  view;
+        btn_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(checkFields())
+                {
+                    login();
+                }
+            }
+        });
 
 
     }
-    public void loadTasks()
+    void login()
     {
         final ProgressDialog dialog=new ProgressDialog(activity);
         dialog.setTitle("Loading");
         dialog.setMessage("Wait...");
         dialog.show();
-        StringRequest request = new StringRequest(Request.Method.POST, "http://admiria.pk/office1/api_v1/Invoices/get_projects",
+        StringRequest request = new StringRequest(Request.Method.POST, "http://admiria.pk/office1/api_v1/Invoices/login",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -102,28 +77,25 @@ public class AllTasksFragment extends Fragment {
                             String res = result.getString("response");
 
 
-                            if (res.equals("Projects Recieved")) {
-
-
-                                JSONArray dataArray= result.getJSONArray("data");
-
-                                for ( int i=0 ; i < dataArray.length() ; i++)
-                                {
-                                    JSONObject jsonObject=dataArray.getJSONObject(i);
-                                    TaskModel model=new TaskModel();
-                                    model.setId(jsonObject.getString("project_id"));
-                                    model.setTitle(jsonObject.getString("project_title"));
-                                    model.setDescription(jsonObject.getString("description"));
-
-                                    list.add(model);
-                                }
-
+                            if (res.equals("Login Successfull")) {
                                 dialog.dismiss();
 
+                                String id=result.getString("id");
+
+                                Log.e("success",res);
+                                SharedPreferences.Editor editor = getSharedPreferences("SharedPreferences", MODE_PRIVATE).edit();
+
+                                editor.putString("email", etEmail.getText().toString());
+                                editor.putString("id", id);
 
 
+                                editor.apply();
 
-                                adapter.notifyDataSetChanged();
+                                Intent i = new Intent(activity, MainActivity.class);
+                                startActivity(i);
+                                finish();
+
+
                             } else {
                                 dialog.dismiss();
                                 Toast.makeText(activity,res, Toast.LENGTH_SHORT).show();
@@ -151,11 +123,10 @@ public class AllTasksFragment extends Fragment {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
 
-                    SharedPreferences sharedPreferences=activity.getSharedPreferences("SharedPreferences", MODE_PRIVATE);
 
-                String user_id=sharedPreferences.getString("id","");
-
-                params.put("user_id", user_id);
+                params.put("email", etEmail.getText().toString());
+                params.put("password", etPassword.getText().toString());
+                params.put("role_id", "4");
 
 
                 Log.e("params" , params.toString());
@@ -165,7 +136,6 @@ public class AllTasksFragment extends Fragment {
         };
 
         Volley.newRequestQueue(activity).add(request);
-
 
     }
     public void parseVolleyError(VolleyError error) {
@@ -177,7 +147,7 @@ public class AllTasksFragment extends Fragment {
                 JSONObject data = new JSONObject(responseBody);
                 JSONObject result = data.getJSONObject("result");
                 String message = result.getString("response");
-                Toast.makeText(getContext().getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
             } catch (JSONException | UnsupportedEncodingException e) {
                 printMsg("internet problem...");
             }
@@ -187,11 +157,29 @@ public class AllTasksFragment extends Fragment {
             printMsg("Your application is not connected to internet...");
         }
     }
+
+    public boolean checkFields()
+    {
+        if(!isValidEmail(etEmail.getText().toString()))
+        {
+            printMsg("Please enter valid Email");
+            return false;
+        }
+        if(etPassword.getText().toString().equals(""))
+        {
+            printMsg("Please enter valid password");
+            return false;
+        }
+        return true;
+    }
+    public boolean isValidEmail(String emailStr) {
+        final Pattern VALID_EMAIL_ADDRESS_REGEX =
+                Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
+        return matcher.find();
+    }
     void printMsg(String msg)
     {
         Toast.makeText(activity ,msg,Toast.LENGTH_SHORT).show();
     }
-
-
-
 }
