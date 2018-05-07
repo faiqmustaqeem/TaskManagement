@@ -82,6 +82,7 @@ public class SelectedTaskAdapter extends RecyclerView.Adapter<SelectedTaskAdapte
         holder.position_text.setText(String.valueOf(position + 1) + ".");
         holder.title_text.setText(model.getName());
         holder.desc.setText(model.getDescription());
+        holder.time.setText(model.getTime());
         Log.e("position" , position+"");
 
         final String id = sharedPref.getString("id"+model.getId(), "");

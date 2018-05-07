@@ -111,11 +111,37 @@ public class SelectedTaskActivity extends AppCompatActivity {
                                     {
                                         if(GlobalClass.is_from.equals("all"))
                                         {
+                                            String progress=jsonObject.getString("task_progress");
+                                            if(progress.equals("100"))
+                                            {
+                                                String start_time_str=jsonObject.getString("start_time");
+                                                String end_time_str=jsonObject.getString("end_time");
+                                                long start_time=Long.valueOf(start_time_str);
+                                                long end_time=Long.valueOf(end_time_str);
+                                                long diff=end_time-start_time;
+                                                long min=diff/60;
+                                                min=min%60;
+                                                long sec=diff%60;
+                                                String time=min+":"+sec;
+                                                model.setTime(time);
+                                            }
+
                                             list.add(model);
                                         }
                                         else if(GlobalClass.is_from.equals("completed"))
                                         {
+
                                          String progress=jsonObject.getString("task_progress");
+                                            String start_time_str=jsonObject.getString("start_time");
+                                            String end_time_str=jsonObject.getString("end_time");
+                                            long start_time=Long.valueOf(start_time_str);
+                                            long end_time=Long.valueOf(end_time_str);
+                                            long diff=end_time-start_time;
+                                            long min=diff/60;
+                                            min=min%60;
+                                            long sec=diff%60;
+                                            String time=min+":"+sec;
+                                            model.setTime(time);
                                             if(progress.equals("100"))
                                             {
                                                 list.add(model);

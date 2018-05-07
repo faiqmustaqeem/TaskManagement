@@ -2,8 +2,10 @@ package com.example.faiq.taskmanagement.Activity;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +21,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.faiq.taskmanagement.R;
+import com.example.faiq.taskmanagement.RealtimeChat.models.User;
+import com.example.faiq.taskmanagement.RealtimeChat.utils.Constants;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONException;
@@ -83,17 +91,14 @@ public class LoginActivity extends AppCompatActivity {
                                 String id=result.getString("id");
 
                                 Log.e("success",res);
-                                SharedPreferences.Editor editor = getSharedPreferences("SharedPreferences", MODE_PRIVATE).edit();
 
-                                editor.putString("email", etEmail.getText().toString());
-                                editor.putString("id", id);
+                                User user=new User(id , etEmail.getText().toString());
 
-
-                                editor.apply();
-
-                                Intent i = new Intent(activity, MainActivity.class);
-                                startActivity(i);
-                                finish();
+                                addUserToFirebase(user);
+//
+//                                Intent i = new Intent(activity, MainActivity.class);
+//                                startActivity(i);
+//                                finish();
 
 
                             } else {
@@ -181,5 +186,39 @@ public class LoginActivity extends AppCompatActivity {
     void printMsg(String msg)
     {
         Toast.makeText(activity ,msg,Toast.LENGTH_SHORT).show();
+    }
+
+
+    public void addUserToFirebase(final User firebaseUser) {
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+        User user = new User(firebaseUser.uid,
+                firebaseUser.email);
+        database.child(Constants.ARG_USERS)
+                .child(firebaseUser.uid)
+                .setValue(user)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            SharedPreferences.Editor editor = getSharedPreferences("SharedPreferences", MODE_PRIVATE).edit();
+
+                            editor.putString("email", firebaseUser.email);
+                            editor.putString("id", firebaseUser.uid);
+
+
+                            editor.apply();
+
+                            Intent i = new Intent(activity, MainActivity.class);
+                            startActivity(i);
+                            finish();
+
+                            Log.e("add_user_firebase" , "success");
+
+                        } else {
+                            Toast.makeText(activity , "firebase error !" , Toast.LENGTH_SHORT).show();
+                            Log.e("add_user_firebase" , "success");
+                        }
+                    }
+                });
     }
 }
